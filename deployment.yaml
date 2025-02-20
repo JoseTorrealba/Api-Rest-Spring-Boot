@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orquidea-express-api
+  labels:
+    app: orquidea-express-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: orquidea-express-api
+  template:
+    metadata:
+      labels:
+        app: orquidea-express-api
+    spec:
+      containers:
+      - name: orquidea-express-api
+        image: orquidea-express-api:latest
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "prod"
+        - name: JAVA_OPTS
+          value: "-Xmx512m -Xms256m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orquidea-express-api-service
+spec:
+  selector:
+    app: orquidea-express-api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer

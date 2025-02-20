@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.orquideaexpress.entity.Item;
-import cl.orquideaexpress.service.ClientRestService;
+import cl.orquideaexpress.service.ItemRestService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
@@ -24,22 +24,22 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/api/v1")
 @Slf4j
 public class ItemController {
-    private final ClientRestService exampleService;
+    private final ItemRestService itemRestService;
 
-    public ItemController(ClientRestService exampleService) {
-        this.exampleService = exampleService;
+    public ItemController(ItemRestService itemRestService) {
+        this.itemRestService = itemRestService;
     }
 
     @GetMapping("/items")
     public Flux<Item> getAllItems(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        return exampleService.getAllItems(page, size);
+        return itemRestService.getAllItems(page, size);
     }
 
     @GetMapping("/items/{id}")
     public Mono<ResponseEntity<Item>> getItem(@PathVariable String id) {
-        return exampleService.getItem(id)
+        return itemRestService.getItem(id)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
@@ -47,14 +47,14 @@ public class ItemController {
     @PostMapping("/items")
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<Item> createItem(@Valid @RequestBody Item item) {
-        return exampleService.createItem(item);
+        return itemRestService.createItem(item);
     }
 
     @PutMapping("/items/{id}")
     public Mono<ResponseEntity<Item>> updateItem(
             @PathVariable String id,
             @Valid @RequestBody Item item) {
-        return exampleService.updateItem(id, item)
+        return itemRestService.updateItem(id, item)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
@@ -62,6 +62,6 @@ public class ItemController {
     @DeleteMapping("/items/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<Void> deleteItem(@PathVariable String id) {
-        return exampleService.deleteItem(id);
+        return itemRestService.deleteItem(id);
     }
 }

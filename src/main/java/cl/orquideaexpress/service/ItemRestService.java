@@ -22,12 +22,12 @@ import reactor.core.publisher.Mono;
 
 
     @Service
-    public class ClientRestService {
-        private static final Logger log = LoggerFactory.getLogger(ClientRestService.class);
+    public class ItemRestService {
+        private static final Logger log = LoggerFactory.getLogger(ItemRestService.class);
         private final WebClient webClient;
         private final WebClientProperties properties;
 
-        public ClientRestService(WebClient webClient, WebClientProperties properties) {
+        public ItemRestService(WebClient webClient, WebClientProperties properties) {
              this.webClient = webClient;
              this.properties = properties;
         }
