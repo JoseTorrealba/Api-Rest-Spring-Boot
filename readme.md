@@ -15,7 +15,7 @@ Este proyecto implementa una API REST utilizando Spring Boot, diseñada para ges
 
 ## Requisitos previos
 
-- Java 11 o superior
+- Java 17 o superior
 - Maven 3.8.1 o superior
 - MySQL/PostgreSQL (según preferencia)
 - IDE compatible con Spring (IntelliJ IDEA, Eclipse, etc.)
